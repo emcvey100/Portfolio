@@ -1,0 +1,465 @@
+https://mygit.wmg.warwick.ac.uk/u2138270/wm164-coursework.git
+assignment.py:
+from csv import reader
+from tkinter import *
+class Windows:
+    '''
+    This class is for the tkinter
+    '''
+    def __init__(self, table, title, path):
+        self.path = path
+        self.table = table
+        self.root=Tk()
+        self.root.title(title)
+        self.table=table
+        self.title=title
+        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_rowconfigure(0, weight=1)
+        self.canvas = Canvas(self.root, height=200, scrollregion=(0,0,100,100))
+        self.canvas.grid(row=2)
+        self.make_table()
+        self.make_home_btn()
+        self.root.mainloop()
+    def make_table(self):
+        '''This method makes the table for the tkinter window'''
+        row_index = 0
+        for row in self.table:
+            column_index=0
+            for column in row:
+                lbl = Label(self.canvas, text=column)
+                lbl.grid(row=row_index, column=column_index)
+                column_index += 1
+            row_index += 1
+            #to stop errors and long waiting
+            if row_index>500:
+                break
+    def make_home_btn(self):
+        '''This method makes the title go back to the home page'''
+        btn = Button(self.root, text="Home", command=self.go_home)
+        btn.grid(row=1) 
+    def go_home(self):
+        '''goes back to main start tk'''
+        self.root.destroy()
+        start(self.path)
+class start:
+    '''
+    This class holds the home tkinter
+    '''
+    def __init__(self, path):
+        self.path = path
+        self.root = Tk()
+        self.root.title("CSV athletes assignment")
+        self.title_label = Label(self.root, text="CSV athletes assignment")
+        self.title_label.grid(row=0)
+        self.full_list = Label(self.root, text="Full list (upto 500 elements):")
+        self.full_list.grid(row=1)
+        self.shortest_btn = Button(self.root,  text="Shortest names", command=self.shortest)
+        self.shortest_btn.grid(row=2, column=0)
+        self.longest_btn = Button(self.root,  text="Longest names", command=self.longest)
+        self.longest_btn.grid(row=2, column=1)
+        self.athletes_btn = Button(self.root,  text="Athletes", command=self.athletes)
+        self.athletes_btn.grid(row=2, column=2)
+        self.country_btn =Button(self.root,  text="NOC", command=self.country)
+        self.country_btn.grid(row=2, column=3)
+        self.sports_btn =Button(self.root,  text="Disicpline", command=self.sports)
+        self.sports_btn.grid(row=2, column=3)
+        self.other_list_label = Label(self.root, text="Other lists")
+        self.other_list_label.grid(row=3)
+        self.fp1_short_btn = Button(self.root, text="Shortest names", command=self.fp1_short)
+        self.fp1_short_btn.grid(row=4, column=0)
+        self.fp1_long_btn = Button(self.root, text="Longest names", command=self.fp1_long)
+        self.fp1_long_btn.grid(row=4, column=1)
+        self.fp2_fp3_btn = Button(self.root, text="top 5 NOCs", command=self.fp1_fp2)
+        self.fp2_fp3_btn.grid(row=4, column=2)
+        self.root.mainloop()
+    def shortest(self):
+        '''This method is a command to get the tkinter for the shortest to largest list'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        table_data = object1.sort_short()
+        use_table_data = [["Name", "NOCs", "Disipline"]]
+        for row in table_data:
+            use_table_data.append([row[1], row[2], row[3]])
+        Windows(use_table_data, "Full list by shortest athletes", self.path)
+    def longest(self):
+        '''This method is a command to get the tkinter for the longest to shortest list'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        table_data = object1.sort_long()
+        use_table_data = [["Name", "NOCs", "Disipline"]]
+        for row in table_data:
+            use_table_data.append([row[1], row[2], row[3]])
+        Windows(use_table_data, "Full list by longest athletes", self.path)
+    def athletes(self):
+        '''This method is a command to get the tkinter for alphabetical list'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        table_data = object1.sort_alphabetical()
+        use_table_data = [["Name", "NOCs", "Disipline"]]
+        for row in table_data:
+            use_table_data.append([row[1], row[2], row[3]])
+        Windows(use_table_data, "Full list by athletes", self.path)
+    def country(self):
+        '''This method is a command to get the tkinter for NOCs list'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        table_data = object1.sort_country()
+        use_table_data = [["Name", "NOCs", "Disipline"]]
+        for row in table_data:
+            use_table_data.append([row[1], row[2], row[3]])
+        Windows(use_table_data, "Full list by countries", self.path)
+    def sports(self):
+        '''This method is a command to get the tkinter for displines list'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        table_data = object1.sort_sport()
+        use_table_data = [["Name", "NOCs", "Disipline"]]
+        for row in table_data:
+            use_table_data.append([row[1], row[2], row[3]])
+        Windows(use_table_data, "Full list by displines", self.path)
+    def fp1_short(self):
+        '''This method is a command to get the tkinter for only shortest athletes name list'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        table_data = object1.shortest_athletes()
+        use_table_data = [["Name", "NOCs", "Disipline"]]
+        for row in table_data:
+            use_table_data.append([row[1], row[2], row[3]])
+        Windows(use_table_data, "Shortest length athletes", self.path)
+    def fp1_long(self):
+        '''This method is a command to get the tkinter for only longest athletes name list'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        table_data = object1.longest_athletes()
+        use_table_data = [["Name", "NOCs", "Disipline"]]
+        for row in table_data:
+            use_table_data.append([row[1], row[2], row[3]])
+        Windows(use_table_data, "Longest length athletes", self.path)
+    def fp1_fp2(self):
+        '''This is the method to get the top 5 NOCs and the top 5 sports for each'''
+        self.root.destroy()
+        object1 = Database(self.path)
+        countries = object1.top_5_NOCs()
+        table_data =[["Country", "Most played sport", "2nd most played sport", "3rd most played sport", "4th most played sport", "5th most played sport"]]
+        for country in countries:
+            row = [country[1]]
+            sports = object1.top_5_sports(country[1])
+            for sport in sports:
+                row.append(sport[1])
+            table_data.append(row)
+        Windows(table_data, "Top 5 NOCs", self.path)
+class Discipline:
+    '''
+    This class holds the discipline information
+    
+    '''
+    def __init__(self, sport, NOCs):
+        self.__sport = sport
+        self.__NOC = NOCs
+    def get_sport(self):
+        '''Discipline sport getter'''
+        return self.__sport
+    def set_sport(self, sport):
+        '''Discipline sport setter'''
+        self.__sport = sport
+    def get_NOC(self):
+        '''Discipline NOC getter'''
+        return self.__NOC
+    def set_NOC(self, NOCs):
+        '''Discipline NOC setter'''
+        self.__NOC = NOCs
+    def add_NOC(self, NOCs):
+        '''This function adds the noc for the sport '''
+        self.__NOC.append(NOCs)
+    def find_length(self, name):
+        '''
+        This function returns the amount of the certain length
+        '''
+        return self.__NOC.count(name)
+class Database:
+    '''
+    This class gets and sorts the database into classes
+    '''
+    def __init__(self, path):
+        self.__path = path
+        self.__data = []
+        self.__NOC = []
+        self.__sports = []
+        self.get_from_csv()
+        self.get_sports_list()
+        self.get_country_list()
+        self.set_into_data()
+    def get_NOC(self):
+        '''Database NOC getter'''
+        return self.__NOC  
+    def set_NOC(self, NOCs):
+        '''Database NOC setter'''
+        self.__NOC = NOCs  
+    def get_sports(self):
+        '''Database sports getter'''
+        return self.__sports
+    def set_sports(self, sports):
+        '''Database sports setter'''
+        self.__sports = sports
+    def get_path(self):
+        '''Database path getter'''
+        return self.__path
+    def set_path(self, path):
+        '''Database path setter'''
+        self.__path = path
+    def get_data(self):
+        '''Database data getter'''
+        return self.__data
+    def set_data(self, data):
+        '''Database data setter'''
+        self.__data = data
+    def get_from_csv(self):
+        '''
+        This function opens the csv and gets all the data out of it
+        '''
+        #opens csv
+        with open(self.__path, 'rt') as csv_file:
+            #gets all the data from csv in a 2d list and saves as an attribute
+            csv_reader = reader(csv_file, delimiter=',')
+            for row in csv_reader:
+                self.__data.append(row)
+    def set_into_data(self):
+        '''
+        This function moves the data into the correct classes
+        '''
+        for row in self.__data:
+            if row[0] == "Name" and row[1] == "NOC" and row[2] == "Discipline":
+                continue
+            person = Athlete(row[0], row[2], row[1])
+            index = self.find_country(row[1])
+            self.__NOC[index].add_athletes(person)
+            index = self.find_sport(row[2])
+            self.__sports[index].add_NOC(row[1])
+    def get_sports_list(self):
+        '''
+        This function gets a list of all sports with no repeat
+        '''
+        sports =[]
+        for row in self.__data:
+            found = False
+            for sport in sports:
+                if sport == row[2]:
+                    found = True
+            if found == False:
+                sports.append(row[2])
+        for sport in sports:
+            obj = Discipline(sport, [])
+            self.__sports.append(obj)
+    def find_sport(self, name):
+        '''
+        This function gets the index for the sport
+        '''
+        for index in range(len(self.__sports)):
+            sport = self.__sports[index]
+            if sport.get_sport() == name:
+                return index
+    def get_country_list(self):
+        '''
+        This function gets a list of all countries with no repeat
+        '''
+        countries =[]
+        for row in self.__data:
+            found = False
+            for country in countries:
+                if country == row[1]:
+                    found = True
+            if found == False:
+                countries.append(row[1])
+        for country in countries:
+            obj = NOC(country)
+            self.__NOC.append(obj)
+    def find_country(self, name):
+        '''
+        This function gets the index for the country
+        '''
+        for index in range(len(self.__NOC)):
+            country = self.__NOC[index]
+            if country.get_country() == name:
+                return index
+    def sort_short(self):
+        '''This function gets the list into the shortest length names first'''
+        athletes = []
+        for country in self.__NOC:
+            athletes += country.send_athletes_length()
+        #sort athletes
+        athletes.sort()
+        return athletes
+    def sort_long(self):
+        '''This function gets the list into the longest length names first'''
+        athletes = []
+        for country in self.__NOC:
+            athletes += country.send_athletes_length()
+        #sort athletes
+        athletes.sort(reverse=True)
+        return athletes
+    def sort_alphabetical(self):
+        '''This function gets the list into the alphabetical first'''
+        athletes = []
+        for country in self.__NOC:
+            athletes += country.send_athletes_char()
+        #sort athletes
+        athletes.sort()
+        return athletes
+    def sort_country(self):
+        '''This function gets the list into the alphabetical of country first'''
+        athletes = []
+        for country in self.__NOC:
+            list_elements = country.send_athletes_char()
+            ord_value = country.get_name()
+            ord_value = ord_value.lower()
+            athletes_entry = [ord(ord_value[0])]
+            for item in list_elements:
+                athletes_entry.append(item)
+            athletes.append(athletes_entry)
+        #sort athletes
+        athletes.sort()
+        return athletes
+    def sort_sport(self):
+        '''This function gets the list into alphabetical of sport first'''
+        athletes = []
+        for country in self.__NOC:
+            athletes += country.send_athletes_sports()
+        #sort athletes
+        athletes.sort()
+        return athletes
+    def shortest_athletes(self):
+        '''This function gets the shortest names and the NOCs and sports'''
+        list_of_parts=self.sort_short()
+        min_num = list_of_parts[0][0]
+        return_list =[]
+        for item in list_of_parts:
+            if item[0] == min_num:
+                return_list.append(item)
+        return return_list
+    def longest_athletes(self):
+        '''This function gets the longest names and the NOCs and sports'''
+        list_of_parts=self.sort_long()
+        max_num = list_of_parts[0][0]
+        return_list =[]
+        for item in list_of_parts:
+            if item[0] == max_num:
+                return_list.append(item)
+        return return_list
+    def top_5_NOCs(self):
+        '''This function gets the top 5 NOCs by number of athletes'''
+        list_of_countries = []
+        for country in self.__NOC:
+            list_of_countries.append([country.find_num_of_athletes(), country.get_country(), country])
+        list_of_countries.sort()
+        return list_of_countries[:5]
+    def top_5_sports(self, country):
+        '''This function gets the top sports based on country'''
+        list_of_sports = []
+        for sport in self.__sports:
+            list_of_sports.append([sport.find_length(country), sport.get_sport(), sport])
+        list_of_sports.sort()
+        return list_of_sports[:5]
+class Athlete(Discipline):
+    '''
+    This class holds the athletes information
+    '''
+    def __init__(self, name, sport, NOCs):
+        super().__init__(sport, NOCs)
+        self.__name = name
+        self.__length = 0
+        self.find_length()
+    def get_name(self):
+        '''Athletes name getter'''
+        return self.__name
+    def set_name(self, name):
+        '''Athletes name setter'''
+        self.__name = name
+    def get_length(self):
+        '''Athletes length getter'''
+        return self.__length
+    def set_length(self, length):
+        '''Athletes length setter'''
+        self.__length = length
+    def find_length(self):
+        '''
+        This function gets the length of the athletes name
+        '''
+        self.__length = 0
+        for letter in self.__name:
+            if letter.isalpha():
+                self.__length+=1
+class NOC:
+    '''
+    This class holds the NOC information
+    '''
+    def __init__(self, country):
+        self.__country = country
+        self.__athletes = []
+    def get_country(self):
+        '''NOC country getter'''
+        return self.__country
+    def set_country(self, country):
+        '''NOC country setter'''
+        self.__country =country
+    def get_athletes(self):
+        '''NOC athletes getter'''
+        return self. __athletes
+    def set_athletes(self, athletes):
+        '''NOC athletes setter'''
+        self.__athletes = athletes
+    def find_num_of_athletes(self):
+        '''
+        This function finds a countries number of athletes
+        '''
+        if isinstance(self.__athletes, str):
+            return 1
+        return len(self.__athletes)
+    def add_athletes(self, athlete):
+        '''
+        This function adds an athlete to the list
+        '''
+        self.__athletes.append(athlete)
+    def send_athletes_length(self):
+        '''This function gets the athletes list with index 0 for each in 2d is 0'''
+        return_list =[]
+        for athlete in self.__athletes:
+            length = athlete.get_length()
+            name = athlete.get_name()
+            sport = athlete.get_sport()
+            return_list.append([length, name, self.__country, sport])
+        return return_list
+    def send_athletes_char(self):
+        '''This function gets the athletes list with first letter as index 0'''
+        return_list =[]
+        for athlete in self.__athletes:
+            name = athlete.get_name()
+            sport = athlete.get_sport()
+            first_letter=name[0]
+            first_letter=first_letter.lower()
+            first_letter=ord(first_letter)
+            return_list.append([first_letter, name, self.__country, sport])
+        return return_list
+    def send_athletes(self):
+        '''This function gets the athletes list'''
+        return_list =[]
+        for athlete in self.__athletes:
+            name = athlete.get_name()
+            sport = athlete.get_sport()
+            return_list.append([name, self.__country, sport])
+        return return_list
+    def send_athletes_sports(self):
+        '''This function gets the athletes list with char of sports as index 0'''
+        return_list =[]
+        for athlete in self.__athletes:
+            name = athlete.get_name()
+            sport = athlete.get_sport()
+            first_letter=sport[0]
+            first_letter=first_letter.lower()
+            first_letter=ord(first_letter)
+            return_list.append([first_letter, name, self.__country, sport])
+        return return_list
+def __main__():
+    path="Athletes.csv"
+    start(path)
+if __name__ == "__main__":
+    __main__()
