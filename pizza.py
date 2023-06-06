@@ -6,6 +6,7 @@ def size():
   for i in baseSize:
     print (i)
   Size = input("What size do you want:")
+  
   Size= Size.capitalize()
   f = 0
   for i in baseSize:
@@ -15,29 +16,29 @@ def size():
   if f == 0:
     print ("Sorry that it has not been found please try again")
     size()
-  _topping_(Size)
+  _topping(size)
   
 
 def _topping_(Size):
-  top = "yes"
+  top = "no"
   while top == "yes":
     input()
     os.system("clear")
     Toppings = [
-      "Pepperoni",
-      "Spicy Minced Beef",
+      "pepperoni",
+      "Spicy minced beef",
       "Chicken", 
       "Anchovies", 
       "Cajun Chicken", 
-      "Tuna", 
-      "Mushrooms", 
-      "Peppers", 
-      "Red Onions",
-      "Jalapenos", 
-      "Sweetcorn", 
-      "Cheese",
-      "Ham",
-      "Green Chillies"]
+      "tuna", 
+      "mushrooms", 
+      "peppers", 
+      "red onions",
+        "Jalapenos", 
+        "Sweetcorn", 
+        "cheese",
+        "ham",
+        "green chillies"]
     for i in Toppings:
       print (i) 
     uTopping = input("What topping do you want?")
