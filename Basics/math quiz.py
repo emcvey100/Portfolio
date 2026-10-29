@@ -1,7 +1,7 @@
 #Write a maths quiz with three questions.
 #It must ask the user to input their name at the start.
 #At the end t should display a message informing the user of their score.
-#Wrie a function that saves the user's name and quiz result in a text file.
+#Write a function that saves the user's name and quiz result in a text file.
 
 def __main__():
   print ("""Welcome to the maths quiz.""")
