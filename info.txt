@@ -1,0 +1,24 @@
+VPN bot
+
+What does it do?:
+	It checks all netflix when on the VPN to see what TV shows are avalible
+
+Parts to do:
+	codes for netflix
+	check codes work
+	make doc to keep it
+	find what country in
+	save doc
+	search doc
+	take screenshot
+
+Classes:
+	show
+		find
+		save
+		search
+		getIMG
+
+Functions:
+	Make doc
+	intro
