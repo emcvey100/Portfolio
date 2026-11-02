@@ -1,7 +1,7 @@
 import smtplib
 import config
 ##sender_email='testingwithpython02@gmail.com'
-##password='pinkpurple1234'
+
 ##
 ##rec_email="emilymcvey100@gmail.com"
 ##subject="hello"
